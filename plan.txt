@@ -1,0 +1,27 @@
+Parser:
+  Abstract class for all other parsers
+  Defines abstract .parse(char_iter)
+
+TokenParser:
+  Tokens are redeemable
+ValueParser:
+
+StringParser:
+
+NumberParser:
+
+ObjectParser:
+
+ArrayParser:
+
+TrueParser:
+
+FalseParser:
+
+NullParser:
+
+CharIter:
+  For iterating over all of the characters in a file-like object
+  Defines:
+    .next_char()
+    .cur_char()
