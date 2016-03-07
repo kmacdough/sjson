@@ -48,8 +48,8 @@ def main():
     char_iter = FileCharIter(sys.stdin)
     char_iter.advance()
     while not char_iter.eof():
-        print(repr(char_iter.cur_charance()()))
-        char_iter.adv
+        print(repr(char_iter.cur_char()))
+        char_iter.advance()
 
 
 if __name__ == "__main__":
