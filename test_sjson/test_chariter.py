@@ -70,3 +70,11 @@ class FileCharIterTest (unittest.TestCase):
         self.assertEqual(False, char_iter.eof())
         char_iter.advance()
         self.assertEqual(True, char_iter.eof())
+
+def suite():
+    suite = unittest.TestSuite()
+    suite.addTest(FileCharIterTest())
+    return suite
+
+if __name__ == '__main__':
+    unittest.main()
