@@ -12,27 +12,42 @@ class FileCharIter(object):
         :return: None
         """
         self.file = file
-        self.current_line = ""
-        self.cur_char_idx = 0
+        self._current_line = ""
+        self._cur_char_idx = 0
+        self._cur_char = None
 
     def advance(self):
         """
         Advances this iterator a charectar
         :return: None
         """
-        self.cur_char_idx += 1
-        if self.cur_char_idx >= len(self.current_line):
-            self.current_line = self.file.readline()
-            self.cur_char_idx = 0
+        if self.eof():
+            return
+        self._cur_char_idx += 1
+        if self._cur_char_idx >= len(self._current_line):
+            self._current_line = self.file.readline()
+            self._cur_char_idx = 0
+            if self._current_line == "":
+                self._cur_char = EOF
+                return
+        self._cur_char = self._current_line[self._cur_char_idx]
 
     def cur_char(self):
         """
         Returns the current character
         :return: next current as a string of length 1
-        :rtype: str
+        :rtype: str or EOF
         """
-        print(repr(self.current_line), self.cur_char_idx)
-        return self.current_line[self.cur_char_idx]
+        return self._cur_char
+
+    def next_char(self):
+        """
+        Returns the next character
+        :return: next next as a string of length 1
+        :rtype: str or EOF
+        """
+        self.advance()
+        return self._cur_char
 
     def eof(self):
         """
@@ -40,16 +55,31 @@ class FileCharIter(object):
         :return: True if at end, False otherwise
         :rtype: bool
         """
-        return self.current_line == ""
+        return self._cur_char is EOF
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        next_char = self.next_char()
+        if next_char is EOF:
+            raise StopIteration
+        return next_char
+
+
+class EOF:
+    """
+    Represents the end of the file
+    """
+    pass
+EOF = EOF()
 
 
 def main():
     sys = __import__('sys')
     char_iter = FileCharIter(sys.stdin)
-    char_iter.advance()
-    while not char_iter.eof():
-        print(repr(char_iter.cur_char()))
-        char_iter.advance()
+    for char in char_iter:
+        print(repr(char))
 
 
 if __name__ == "__main__":
